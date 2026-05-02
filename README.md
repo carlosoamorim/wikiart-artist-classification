@@ -1,8 +1,8 @@
 # WikiArt Artist Classification with Keras
 
-**Artist attribution from pixels alone - a deep learning approach to a genuinely hard vision problem.**
+**Artist attribution from pixels alone, a deep learning approach to a vision problem.**
 
-Classifying paintings by artist is not like standard object recognition. Style is a diffuse signal encoded simultaneously in brushstroke texture, colour temperature, spatial frequency, and compositional habit. This project investigates how well deep learning can learn these cues across 23 artists from the WikiArt dataset - and where it fails.
+Classifying paintings by artist is not like standard object recognition. Style is a diffuse signal encoded simultaneously in brushstroke texture, colour temperature, spatial frequency, and compositional habit. This project investigates how well deep learning can learn these cues across 23 artists from the WikiArt dataset, and where it fails.
 
 ---
 
@@ -38,7 +38,7 @@ Final evaluation on a held-out test set of 1,984 images. Validation macro F1 (0.
 ### 1. CNN from Scratch (Baseline)
 Four-block custom CNN trained from scratch to establish a ceiling without pretrained representations.
 
-- Architecture: 4× [Conv2D(3×3) → Conv2D(3×3) → BN → ReLU → Dropout], filter progression 32→64→128→256
+- Architecture: 4× [Conv2D(3×3) -> Conv2D(3×3) -> BN -> ReLU -> Dropout], filter progression 32->64->128->256
 - Blocks 1–3: MaxPooling(2×2); Block 4: GlobalAveragePooling
 - L2 regularisation (λ = 1e-4), Adam (lr = 1e-3), label smoothing = 0.1
 - Callbacks: EarlyStopping (patience=8), ReduceLROnPlateau (factor=0.5, patience=4)
@@ -51,7 +51,7 @@ Four-block custom CNN trained from scratch to establish a ceiling without pretra
 | Geometric (flip + rotation + zoom) | 0.458 | 0.553 | 0.095 |
 | Photometric (flip + brightness±10% + contrast±10%) | 0.627 | 0.653 | 0.026 |
 
-Geometric transforms consistently hurt - rotation and zoom destroy compositional cues that are genuine discriminative features in painting style. Photometric augmentation was carried forward for all subsequent models.
+Geometric transforms consistently hurt since rotation and zoom destroy compositional cues that are genuine discriminative features in painting style. Photometric augmentation was carried forward for **all** subsequent models.
 
 ---
 
@@ -64,7 +64,7 @@ Primary backbone. 21M parameters, pretrained on ImageNet-21k. Adapted via a 3-ph
 | 2 | + block6 layers (≥288) - SE attention | 1e-4 | 0.850 |
 | 3 | + block5 layers (≥155) - mid-level textures | 5e-5 | **0.851** |
 
-Block6 was selected first because it contains the deepest Squeeze-and-Excitation attention sub-blocks - the layers most responsible for high-level semantic representations that need adapting from natural photos to painterly features. Block5 adds mid-level texture detectors relevant to brushstroke patterns.
+Block6 was selected first because it contains the deepest Squeeze-and-Excitation attention sub-blocks, the layers most responsible for high-level semantic representations that need adapting from natural photos to painterly features. Block5 adds mid-level texture detectors relevant to brushstroke patterns.
 
 ---
 
@@ -87,7 +87,7 @@ The two best checkpoints combined by averaging softmax output distributions.
 | MobileNetV3Large alone | 0.803 |
 | Ensemble 60/40 (V2S-favouring) | 0.858 |
 | **Ensemble 50/50** | **0.862** |
-| **→ Test set (final)** | **0.860** |
+| **-> Test set (final)** | **0.860** |
 
 Equal weighting outperforming 60/40 confirms the two models are making genuinely complementary errors. Giving more weight to the stronger model suppresses MobileNet's corrective contribution on the cases where it disagrees correctly.
 
@@ -111,11 +111,11 @@ This makes individual errors interpretable - you can see *what the model saw* th
 
 The confusion matrix does not reveal a single dominant failure mode. Observed confusions are largely art-historically interpretable:
 
-- **Pissarro → Monet** (9 errors): both Impressionists, near-identical brushwork tradition
-- **Dalí → scattered** (Cézanne, Monet, Roerich): Surrealism has no consistent anchor in the feature space; model defaults to surface-level cues
-- **Cézanne → Van Gogh / Renoir**: shared Post-Impressionist palette and visible brushstroke structure
-- **Kustodiev → Repin**: both Russian Realists with nearly identical subject matter and tonal palette
-- **Roerich → Van Gogh**: shared bold, saturated colour and rhythmic landscape composition
+- **Pissarro -> Monet** (9 errors): both Impressionists, near-identical brushwork tradition
+- **Dalí -> scattered** (Cézanne, Monet, Roerich): Surrealism has no consistent anchor in the feature space; model defaults to surface-level cues
+- **Cézanne -> Van Gogh / Renoir**: shared Post-Impressionist palette and visible brushstroke structure
+- **Kustodiev -> Repin**: both Russian Realists with nearly identical subject matter and tonal palette
+- **Roerich -> Van Gogh**: shared bold, saturated colour and rhythmic landscape composition
 
 At its boundaries, artist classification is not purely a modelling problem - it reflects genuine ambiguity in artistic style that would challenge non-specialist human observers equally.
 
@@ -127,7 +127,7 @@ At its boundaries, artist classification is not purely a modelling problem - it 
 wikiart-painter-classification/
 │
 ├── eda.ipynb                # Dataset inspection: class balance, colour analysis, duplicate detection
-├── group21_models.ipynb     # Full training pipeline: CNN → fine-tuning → ensemble → evaluation
+├── group21_models.ipynb     # Full training pipeline: CNN -> fine-tuning -> ensemble -> evaluation
 │
 └── README.md
 ```
@@ -144,8 +144,8 @@ Findings here directly motivated the augmentation strategy and duplicate removal
 1. Data loading, split verification, class distribution
 2. Class weighting
 3. CNN from scratch (3 augmentation ablations)
-4. EfficientNetV2S (Phase 1 → 2 → 3 + regularised variant)
-5. MobileNetV3Large (Phase 1 → 2 + regularised variant)
+4. EfficientNetV2S (Phase 1 -> 2 -> 3 + regularised variant)
+5. MobileNetV3Large (Phase 1 -> 2 + regularised variant)
 6. Ensemble evaluation (50/50 and 60/40)
 7. Final test set evaluation + confusion matrix
 8. Nearest-neighbour misclassification analysis
