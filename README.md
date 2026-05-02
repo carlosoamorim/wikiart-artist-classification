@@ -1,4 +1,4 @@
-# 🎨 WikiArt Painter Classification
+# WikiArt Artist Classification
 
 **Artist attribution from pixels alone — a deep learning approach to a genuinely hard vision problem.**
 
@@ -126,7 +126,7 @@ At its boundaries, artist classification is not purely a modelling problem — i
 ```
 wikiart-painter-classification/
 │
-├── group21_models.ipynb     # Full pipeline: data prep → training → ensemble → evaluation
+├── Models.ipynb     # Full pipeline: data prep → training → ensemble → evaluation
 │
 └── README.md
 ```
