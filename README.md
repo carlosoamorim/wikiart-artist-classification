@@ -1,8 +1,8 @@
 # WikiArt Artist Classification
 
-**Artist attribution from pixels alone — a deep learning approach to a genuinely hard vision problem.**
+**Artist attribution from pixels alone - a deep learning approach to a genuinely hard vision problem.**
 
-Classifying paintings by artist is not like standard object recognition. Style is a diffuse signal encoded simultaneously in brushstroke texture, colour temperature, spatial frequency, and compositional habit. This project investigates how well deep learning can learn these cues across 23 artists from the WikiArt dataset — and where it fails.
+Classifying paintings by artist is not like standard object recognition. Style is a diffuse signal encoded simultaneously in brushstroke texture, colour temperature, spatial frequency, and compositional habit. This project investigates how well deep learning can learn these cues across 23 artists from the WikiArt dataset - and where it fails.
 
 ---
 
@@ -22,13 +22,13 @@ Final evaluation on a held-out test set of 1,984 images. Validation macro F1 (0.
 
 ## Dataset
 
-- **Source:** [WikiArt](https://www.wikiart.org/) — 23-class subset
+- **Source:** [WikiArt](https://www.wikiart.org/) - 23-class subset
 - **Size:** 13,172 paintings after duplicate removal (perceptual hashing + Hamming distance, threshold = 10)
 - **Split:** 70% train / 15% validation / 15% test
 - **Input resolution:** 224 × 224 (ImageNet-compatible)
 - **Labels:** one-hot encoded for compatibility with categorical cross-entropy, label smoothing, and macro F1
 - **Class imbalance:** ~3.9× ratio (Van Gogh: 1,322 images vs. Dalí: 336)
-- **Imbalance handling:** balanced class weighting — loss contributions scaled inversely to class frequency, preferred over over/undersampling
+- **Imbalance handling:** balanced class weighting - loss contributions scaled inversely to class frequency, preferred over over/undersampling
 - **Primary metric:** macro F1, chosen over accuracy to give equal weight to all 23 artists regardless of support
 
 ---
@@ -51,24 +51,24 @@ Four-block custom CNN trained from scratch to establish a ceiling without pretra
 | Geometric (flip + rotation + zoom) | 0.458 | 0.553 | 0.095 |
 | Photometric (flip + brightness±10% + contrast±10%) | 0.627 | 0.653 | 0.026 |
 
-Geometric transforms consistently hurt — rotation and zoom destroy compositional cues that are genuine discriminative features in painting style. Photometric augmentation was carried forward for all subsequent models.
+Geometric transforms consistently hurt - rotation and zoom destroy compositional cues that are genuine discriminative features in painting style. Photometric augmentation was carried forward for all subsequent models.
 
 ---
 
-### 2. EfficientNetV2S — Progressive Fine-tuning
+### 2. EfficientNetV2S - Progressive Fine-tuning
 Primary backbone. 21M parameters, pretrained on ImageNet-21k. Adapted via a 3-phase progressive unfreezing strategy to minimise catastrophic forgetting.
 
 | Phase | Unfrozen scope | LR | Val F1 |
 |---|---|---|---|
 | 1 | Head only (frozen backbone) | 1e-3 | 0.678 |
-| 2 | + block6 layers (≥288) — SE attention | 1e-4 | 0.850 |
-| 3 | + block5 layers (≥155) — mid-level textures | 5e-5 | **0.851** |
+| 2 | + block6 layers (≥288) - SE attention | 1e-4 | 0.850 |
+| 3 | + block5 layers (≥155) - mid-level textures | 5e-5 | **0.851** |
 
-Block6 was selected first because it contains the deepest Squeeze-and-Excitation attention sub-blocks — the layers most responsible for high-level semantic representations that need adapting from natural photos to painterly features. Block5 adds mid-level texture detectors relevant to brushstroke patterns.
+Block6 was selected first because it contains the deepest Squeeze-and-Excitation attention sub-blocks - the layers most responsible for high-level semantic representations that need adapting from natural photos to painterly features. Block5 adds mid-level texture detectors relevant to brushstroke patterns.
 
 ---
 
-### 3. MobileNetV3Large — Ensemble Partner
+### 3. MobileNetV3Large - Ensemble Partner
 5.4M parameters with depthwise separable convolutions. Selected specifically for its different inductive bias relative to EfficientNetV2S, making it likely to disagree on the cases where EfficientNetV2S is wrong.
 
 | Phase | Unfrozen scope | LR | Val F1 |
@@ -103,7 +103,7 @@ Beyond standard evaluation, the notebook includes a feature-space explainability
 3. A full training index is built at inference time
 4. For each misclassification, the nearest neighbour is retrieved from the predicted class's subset of the index
 
-This makes individual errors interpretable — you can see *what the model saw* that led it to confuse a Pissarro for a Monet.
+This makes individual errors interpretable - you can see *what the model saw* that led it to confuse a Pissarro for a Monet.
 
 ---
 
@@ -117,7 +117,7 @@ The confusion matrix does not reveal a single dominant failure mode. Observed co
 - **Kustodiev → Repin**: both Russian Realists with nearly identical subject matter and tonal palette
 - **Roerich → Van Gogh**: shared bold, saturated colour and rhythmic landscape composition
 
-At its boundaries, artist classification is not purely a modelling problem — it reflects genuine ambiguity in artistic style that would challenge non-specialist human observers equally.
+At its boundaries, artist classification is not purely a modelling problem - it reflects genuine ambiguity in artistic style that would challenge non-specialist human observers equally.
 
 ---
 
@@ -185,5 +185,5 @@ optuna
 
 Carlos Amorim · Duarte Neves · Margarida Ourives · Ricardo Trindade · Rodrigo Amaral
 
-*MSc. Data Science & Advanced Analytics — Nova IMS, 2025/2026*  
-*Deep Learning — Prof. Mauro Castelli*
+*MSc. Data Science & Advanced Analytics - Nova IMS, 2025/2026*  
+*Deep Learning - Prof. Mauro Castelli*
